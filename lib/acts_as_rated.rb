@@ -113,12 +113,18 @@ module ActiveRecord #:nodoc:
           end
 
           raise RatedError, ":rating_range must be a range object" unless options[:rating_range].nil? || (Range === options[:rating_range])
-          write_inheritable_attribute( :acts_as_rated_options ,
-                                         { :rating_range => options[:rating_range],
-                                           :rating_class => rating_class,
-                                           :stats_class => stats_class,
-                                           :rater_class => rater_class } )
-          class_attribute :acts_as_rated_options
+          #write_inheritable_attribute( :acts_as_rated_options ,
+          #                               { :rating_range => options[:rating_range],
+          #                                 :rating_class => rating_class,
+          #                                 :stats_class => stats_class,
+          #                                 :rater_class => rater_class } )
+          #class_attribute :acts_as_rated_options
+	  class_attribute :acts_as_rated_options
+          self.acts_as_rated_options=
+                                     { :rating_range => options[:rating_range],
+                                       :rating_class => rating_class,
+                                       :stats_class => stats_class,
+                                       :rater_class => rater_class }
 
           class_eval do
             has_many :ratings, :as => :rated, :dependent => :delete_all, :class_name => rating_class.to_s
@@ -373,7 +379,8 @@ module ActiveRecord #:nodoc:
           raise RateError, "The rater object must be the one used when defining acts_as_rated (or a descendent of it). other objects are not acceptable" if !(acts_as_rated_options[:rater_class].constantize === rater)
           raise RateError, 'Cannot find_rated_by if not using a rater' if !rating_class.column_names.include? "rater_id"
           raise RateError, "Rater must be an existing object with an id" if rater.id.nil?
-          rated_class = ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s
+          #rated_class = ActiveRecord::Base.send(:class_name_of_active_record_descendant, self).to_s
+	  rated_class = ActiveRecord::Base.send(:class_of_active_record_descendant, self).to_s
           conds = [ 'rated_type = ? AND rater_id = ?', rated_class, rater.id ]
           acts_as_rated_options[:rating_class].constantize.find(:all, :conditions => conds).collect {|r| r.rated_type.constantize.find_by_id r.rated.id }
         end
