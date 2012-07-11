@@ -12,12 +12,10 @@ Gem::Specification.new do |s|
   s.description = %q{TODO: Write a gem description}
 
   s.files = [
-    "acts-as-rated.gemspec",
+    "acts_as_rated.gemspec",
     "init.rb",
     "lib/acts_as_rated.rb",
-    "MIT-LICENSE",
     "Rakefile",
-    "README"
     ]
   s.test_files = ["test/rated_test.rb"]
 
