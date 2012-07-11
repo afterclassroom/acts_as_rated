@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{TODO: Write a gem summary}
   s.description = %q{TODO: Write a gem description}
 
-  s.rubyforge_project = "acts_as_rated"
-
   s.files = [
     "acts-as-rated.gemspec",
     "init.rb",
